@@ -10,14 +10,14 @@ dubboss是一个分布式REST服务的框架,实现了如下功能:
 #### 如何快速使用
 
 1.  启动服务提供者: cn.injava.dubboss.service.starter.StartService
-2.  启动服务调用着: cn.injava.dubboss.server.starter.StartServer
+2.  启动服务调用者: cn.injava.dubboss.server.starter.StartServer
 3.  通过浏览器访问 http://localhost:8080/hello/dubboss, 如果返回Hello开头的信息,表示REST调用成功
 
 #### 如何打包并部署
 
 1.  在根目录下执行maven打包命令: mvn package
-2.  启动服务提供着: java -jar dubboss-server/target/dubboss-server-1.0-SNAPSHOT.jar
-3.  启动服务调用着: java -jar dubboss-service/target/dubboss-service-1.0-SNAPSHOT.jar
+2.  启动服务提供者: java -jar dubboss-service/target/dubboss-service-1.0-SNAPSHOT.jar
+3.  启动服务调用者: java -jar dubboss-server/target/dubboss-server-1.0-SNAPSHOT.jar
 4.  通过浏览器访问 http://localhost:8080/hello/dubboss, 如果返回Hello开头的信息,表示REST调用成功
 
 #### TODO
@@ -26,4 +26,4 @@ dubboss是一个分布式REST服务的框架,实现了如下功能:
 +   实现session共享
 +   后台启动的脚本
 +   接入数据库,以及数据库中间件
-+   shell的启动脚本
++   ngnix的配置

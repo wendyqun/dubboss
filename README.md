@@ -1,4 +1,4 @@
-# dubboss
+# dubboss [![Travis CI Status](https://travis-ci.org/leiguorui/dubboss.svg)](https://travis-ci.org/leiguorui/dubboss)
 
 dubboss是一个分布式REST服务的框架,实现了如下功能:
 

@@ -8,9 +8,10 @@
        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
      <dubbo:application name="dubboss-service" />
-     <dubbo:registry protocol="zookeeper" address="192.168.157.128:2181" />
+     <dubbo:registry protocol="zookeeper" address="10.1.11.147:2888" />
      <dubbo:protocol name="dubbo" port="20880" />
      <dubbo:service interface="cn.injava.dubboss.api.DemoService" ref="demoService" />
-
+     <dubbo:service interface="cn.injava.dubboss.api.StubTestService" ref="stubTestService" stub="true"/>
      <bean id="demoService" class="cn.injava.dubboss.service.impl.DemoServiceImpl" />
+     <bean id="stubTestService" class="cn.injava.dubboss.service.impl.StubTestServiceImpl"/>
 </beans>

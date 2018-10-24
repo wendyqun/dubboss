@@ -1,0 +1,3 @@
+Controller里无法注入reference
+
+springMVC 和 Root ApplicationContext 是两个，bean 在不同的Application中

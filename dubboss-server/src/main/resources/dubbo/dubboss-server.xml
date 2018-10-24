@@ -9,9 +9,6 @@
        http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
      <dubbo:application name="dubbo-consumer" />
-     <dubbo:registry protocol="zookeeper" address="192.168.157.128:2181" />
+     <dubbo:registry protocol="zookeeper" address="10.1.11.147:2888" />
      <dubbo:reference interface="cn.injava.dubboss.api.DemoService" id="demoService" />
-
-    <!-- 自动扫描包 ,将带有注解的类 纳入spring容器管理 -->
-    <context:component-scan base-package="cn.injava.dubboss.server"/>
 </beans>

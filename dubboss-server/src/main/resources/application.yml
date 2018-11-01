@@ -1,0 +1,20 @@
+server:
+  port: 8800
+spring:
+    dubbo:
+        application:
+            name: dubbo-server
+        registry:
+            address: zookeeper://10.1.11.147:2888
+        consumer:
+           # check: false
+            timeout: 1200000
+            retries: 0
+        # 很关键，否则controller中的service注入为null
+        scan: cn.injava.dubboss.server.controller
+        protocol:
+             name: dubbo
+             threadpool: cached
+             threads: 500
+             accepts: 1000
+             dispatcher: message

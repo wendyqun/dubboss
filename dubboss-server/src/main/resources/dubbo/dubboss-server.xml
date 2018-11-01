@@ -8,7 +8,9 @@
        http://code.alibabatech.com/schema/dubbo
        http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-     <dubbo:application name="dubbo-consumer" />
+     <!--<dubbo:application name="dubbo-consumer" />
      <dubbo:registry protocol="zookeeper" address="10.1.11.147:2888" />
-     <dubbo:reference interface="cn.injava.dubboss.api.DemoService" id="demoService" />
+     <dubbo:reference interface="cn.injava.dubboss.api.DemoService" id="demoService" />-->
+
+    <dubbo:consumer check="false" retries="0" timeout="20000"/>
 </beans>

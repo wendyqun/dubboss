@@ -12,6 +12,7 @@
         <module>dubboss-api</module>
         <module>dubboss-service</module>
         <module>dubboss-server</module>
+        <module>dubboss-common</module>
     </modules>
 
     <parent>

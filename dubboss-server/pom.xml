@@ -30,6 +30,11 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.24</version>
         </dependency>
+        <dependency>
+            <groupId>io.dubbo.springboot</groupId>
+            <artifactId>spring-boot-starter-dubbo</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -98,6 +103,7 @@
                 <includes>
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
+                    <include>**/*.yml</include>
                 </includes>
             </resource>
             <resource>

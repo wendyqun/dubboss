@@ -1,2 +1,15 @@
 server:
   port: 8889
+spring:
+    dubbo:
+        application:
+            name: dubbo-service
+        registry:
+            address: zookeeper://10.1.11.147:2888
+        scan: cn.injava.dubboss.service
+        protocol:
+             name: dubbo
+             threadpool: cached
+             threads: 500
+             accepts: 1000
+             dispatcher: message

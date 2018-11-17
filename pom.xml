@@ -72,11 +72,11 @@
         </dependency>
 
         <!-- Servlet API and mock req/res -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-servlet_3.0_spec</artifactId>
             <version>${geronimo.specs-version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>

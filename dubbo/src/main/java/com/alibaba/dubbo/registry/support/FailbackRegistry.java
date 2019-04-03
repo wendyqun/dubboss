@@ -47,7 +47,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
 
     // Timer for failure retry, regular check if there is a request for failure, and if there is, an unlimited retry
     private final ScheduledFuture<?> retryFuture;
-
+    // 记录向zookeeper上注册失败的url
     private final Set<URL> failedRegistered = new ConcurrentHashSet<URL>();
 
     private final Set<URL> failedUnregistered = new ConcurrentHashSet<URL>();
@@ -128,10 +128,13 @@ public abstract class FailbackRegistry extends AbstractRegistry {
         if (destroyed.get()){
             return;
         }
+        //consumer://192.168.168.1/cn.injava.dubboss.api.DemoService?application=dubbo-server&category=consumers&
+        // check=false&dubbo=2.0.0&interface=cn.injava.dubboss.api.DemoService&methods=sayHello,sayBye&pid=5712&side=consumer&timestamp=1553515541694
         super.register(url);
         failedRegistered.remove(url);
         failedUnregistered.remove(url);
         try {
+            // zookeeper上写入消费者路径
             // Sending a registration request to the server side
             doRegister(url);
         } catch (Exception e) {

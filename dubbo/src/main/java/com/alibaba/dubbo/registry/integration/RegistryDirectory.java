@@ -381,14 +381,14 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
                     } else {
                         enabled = url.getParameter(Constants.ENABLED_KEY, true);
                     }
-                    if (enabled) {
+                    if (enabled) {// serviceType= interface cn.injava.dubboss.api.DemoService
                         invoker = new InvokerDelegate<T>(protocol.refer(serviceType, url), url, providerUrl);
                     }
                 } catch (Throwable t) {
                     logger.error("Failed to refer invoker for interface:" + serviceType + ",url:(" + url + ")" + t.getMessage(), t);
                 }
                 if (invoker != null) { // Put new invoker in cache
-                    newUrlInvokerMap.put(key, invoker);
+                    newUrlInvokerMap.put(key, invoker);// key=dubbo://10.1.128.181:20880/cn.injava.dubboss.api.DemoService?accepts=1000&anyhost=true&application=dubbo-server&check=false&dispatcher=message&dubbo=2.0.0&generic=false&interface=cn.injava.dubboss.api.DemoService&methods=sayHello,sayBye&pid=9012&register.ip=192.168.10.101&remote.timestamp=1552813101902&side=consumer&timestamp=1552813291423
                 }
             } else {
                 newUrlInvokerMap.put(key, invoker);
@@ -486,7 +486,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         List<Invoker<T>> newInvokersList = route(invokersList, null);
         newMethodInvokerMap.put(Constants.ANY_VALUE, newInvokersList);
         if (serviceMethods != null && serviceMethods.length > 0) {
-            for (String method : serviceMethods) {
+            for (String method : serviceMethods) {// sayHello sayBye
                 List<Invoker<T>> methodInvokers = newMethodInvokerMap.get(method);
                 if (methodInvokers == null || methodInvokers.size() == 0) {
                     methodInvokers = newInvokersList;

@@ -277,7 +277,14 @@ public class RegistryProtocol implements Protocol {
 
     @SuppressWarnings("unchecked")
     public <T> Invoker<T> refer(Class<T> type, URL url) throws RpcException {
+        //这里，protocol被替换成zookeeper  去掉了parameters里的 registry key
         url = url.setProtocol(url.getParameter(Constants.REGISTRY_KEY, Constants.DEFAULT_REGISTRY)).removeParameter(Constants.REGISTRY_KEY);
+        //zookeeper://10.1.11.147:2888/com.alibaba.dubbo.registry.RegistryService?
+        // application=dubbo-server
+        // dubbo=2.0.0
+        // group=hhh
+        // pid=9012&
+        // refer=application=dubbo-server&dubbo=2.0.0&interface=cn.injava.dubboss.api.DemoService&methods=sayHello,sayBye&pid=9012&register.ip=192.168.10.101&side=consumer&timestamp=1552813291423&timestamp=1552813331684
         Registry registry = registryFactory.getRegistry(url);
         if (RegistryService.class.equals(type)) {
             return proxyFactory.getInvoker((T) registry, type, url);
@@ -303,19 +310,23 @@ public class RegistryProtocol implements Protocol {
         RegistryDirectory<T> directory = new RegistryDirectory<T>(type, url);
         directory.setRegistry(registry);
         directory.setProtocol(protocol);
-        // all attributes of REFER_KEY
+        // all attributes of REFER_KEY,
         Map<String, String> parameters = new HashMap<String, String>(directory.getUrl().getParameters());
+        //consumer://192.168.168.1/cn.injava.dubboss.api.DemoService?application=dubbo-server&dubbo=2.0.0&
+        // interface=cn.injava.dubboss.api.DemoService&methods=sayHello,sayBye&pid=10024&side=consumer&timestamp=1553518090944
         URL subscribeUrl = new URL(Constants.CONSUMER_PROTOCOL, parameters.remove(Constants.REGISTER_IP_KEY), 0, type.getName(), parameters);
         if (!Constants.ANY_VALUE.equals(url.getServiceInterface())
                 && url.getParameter(Constants.REGISTER_KEY, true)) {
+            // 向zookeeper上写入 消费者path
             registry.register(subscribeUrl.addParameters(Constants.CATEGORY_KEY, Constants.CONSUMERS_CATEGORY,
                     Constants.CHECK_KEY, String.valueOf(false)));
         }
+        // 默认执行 FailbackRegistry.subscribe()
         directory.subscribe(subscribeUrl.addParameter(Constants.CATEGORY_KEY,
                 Constants.PROVIDERS_CATEGORY
                         + "," + Constants.CONFIGURATORS_CATEGORY
                         + "," + Constants.ROUTERS_CATEGORY));
-
+        //MockClusterInvoker
         Invoker invoker = cluster.join(directory);
         ProviderConsumerRegTable.registerConsuemr(invoker, url, subscribeUrl, directory);
         return invoker;

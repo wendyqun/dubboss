@@ -75,7 +75,7 @@ public class ProviderConsumerRegTable {
 
     public static void registerConsuemr(Invoker invoker, URL registryUrl, URL consumerUrl, RegistryDirectory registryDirectory) {
         ConsumerInvokerWrapper wrapperInvoker = new ConsumerInvokerWrapper(invoker, registryUrl, consumerUrl, registryDirectory);
-        String serviceUniqueName = consumerUrl.getServiceKey();
+        String serviceUniqueName = consumerUrl.getServiceKey();//cn.injava.dubboss.api.DemoService
         Set<ConsumerInvokerWrapper> invokers = consumerInvokers.get(serviceUniqueName);
         if (invokers == null) {
             consumerInvokers.putIfAbsent(serviceUniqueName, new ConcurrentHashSet<ConsumerInvokerWrapper>());

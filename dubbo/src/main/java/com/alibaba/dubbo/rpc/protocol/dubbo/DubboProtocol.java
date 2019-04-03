@@ -321,7 +321,7 @@ public class DubboProtocol extends AbstractProtocol {
     }
 
     public <T> Invoker<T> refer(Class<T> serviceType, URL url) throws RpcException {
-        optimizeSerialization(url);
+        optimizeSerialization(url);//url =dubbo://10.1.128.181:20880/cn.injava.dubboss.api.DemoService?accepts=1000&anyhost=true&application=dubbo-server&check=false&dispatcher=message&dubbo=2.0.0&generic=false&interface=cn.injava.dubboss.api.DemoService&methods=sayHello,sayBye&pid=9012&register.ip=192.168.10.101&remote.timestamp=1552813101902&side=consumer&timestamp=1552813291423
         // create rpc invoker.
         DubboInvoker<T> invoker = new DubboInvoker<T>(serviceType, url, getClients(url), invokers);
         invokers.add(invoker);
@@ -363,7 +363,7 @@ public class DubboProtocol extends AbstractProtocol {
                 referenceClientMap.remove(key);
             }
         }
-        synchronized (key.intern()) {
+        synchronized (key.intern()) {//10.1.128.181:20880
             ExchangeClient exchangeClient = initClient(url);
             client = new ReferenceCountExchangeClient(exchangeClient, ghostClientMap);
             referenceClientMap.put(key, client);
@@ -377,9 +377,9 @@ public class DubboProtocol extends AbstractProtocol {
      */
     private ExchangeClient initClient(URL url) {
 
-        // client type setting.
+        // client type setting. str=netty
         String str = url.getParameter(Constants.CLIENT_KEY, url.getParameter(Constants.SERVER_KEY, Constants.DEFAULT_REMOTING_CLIENT));
-
+        //version=2.0.0
         String version = url.getParameter(Constants.DUBBO_VERSION_KEY);
         boolean compatible = (version != null && version.startsWith("1.0."));
         url = url.addParameter(Constants.CODEC_KEY, DubboCodec.NAME);

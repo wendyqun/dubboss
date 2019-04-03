@@ -375,6 +375,8 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
                     }
                 }
             } else { // assemble URL from register center's configuration
+                //us[0]=registry://10.1.11.147:2888/com.alibaba.dubbo.registry.RegistryService?
+                // application=dubbo-server&dubbo=2.0.0&group=hhh&pid=9368&registry=zookeeper&timestamp=1552813208514
                 List<URL> us = loadRegistries(false);
                 if (us != null && us.size() > 0) {
                     for (URL u : us) {
@@ -389,7 +391,10 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
                     throw new IllegalStateException("No such any registry to reference " + interfaceName + " on the consumer " + NetUtils.getLocalHost() + " use dubbo version " + Version.getVersion() + ", please config <dubbo:registry address=\"...\" /> to your spring config.");
                 }
             }
-
+            //registry://10.1.11.147:2888/com.alibaba.dubbo.registry.RegistryService?application=dubbo-server&dubbo=2.0.0&group=hhh&pid=9012
+            // &refer=application%3Ddubbo-server%26dubbo%3D2.0.0%26interface%3Dcn.injava.dubboss.api.DemoService%26methods%3DsayHello%2CsayBye%26pid%3D9012%26
+            // register.ip%3D192.168.10.101%26side%3Dconsumer%26timestamp%3D1552813291423&registry=zookeeper&timestamp=1552813331684
+            // 参数设置parameters： registry=zookeeper, application=dubbo-server    pid=1111  group=hhh
             if (urls.size() == 1) {
                 invoker = refprotocol.refer(interfaceClass, urls.get(0));
             } else {

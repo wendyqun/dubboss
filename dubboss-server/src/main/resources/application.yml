@@ -17,5 +17,5 @@ spring:
              name: dubbo
              threadpool: cached
              threads: 500
-             accepts: 1000
+             accepts: 2000
              dispatcher: message

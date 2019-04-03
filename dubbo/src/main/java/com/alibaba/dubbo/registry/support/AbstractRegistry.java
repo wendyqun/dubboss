@@ -78,10 +78,16 @@ public abstract class AbstractRegistry implements Registry {
 
     private AtomicBoolean destroyed = new AtomicBoolean(false);
 
+    // 处理缓存本地的服务提供者File
     public AbstractRegistry(URL url) {
+        // zookeeper://10.1.11.147:2888/com.alibaba.dubbo.registry.RegistryService?
+        // application=dubbo-server&dubbo=2.0.0&group=hhh&
+        // interface=com.alibaba.dubbo.registry.RegistryService&
+        // pid=6768&timestamp=1553413954689
         setUrl(url);
         // Start file save timer
         syncSaveFile = url.getParameter(Constants.REGISTRY_FILESAVE_SYNC_KEY, false);
+        // C:\Users\Administrator/.dubbo/dubbo-registry-dubbo-server-10.1.11.147:2888.cache
         String filename = url.getParameter(Constants.FILE_KEY, System.getProperty("user.home") + "/.dubbo/dubbo-registry-" + url.getParameter(Constants.APPLICATION_KEY) + "-" + url.getAddress() + ".cache");
         File file = null;
         if (ConfigUtils.isNotEmpty(filename)) {

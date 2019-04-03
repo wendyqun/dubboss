@@ -65,6 +65,7 @@ public class ZkClientWrapper {
             connectThread.start();
             try {
                 client = listenableFutureTask.get(timeout, TimeUnit.MILLISECONDS);
+                logger.info("ZkClient instance over===========");
             } catch (Throwable t) {
                 logger.error("Timeout! zookeeper server can not be connected in : " + timeout + "ms!", t);
             }
@@ -81,6 +82,7 @@ public class ZkClientWrapper {
                 try {
                     client = listenableFutureTask.get();
                     client.subscribeStateChanges(listener);
+                    logger.info("ZkClient subscribeStateChanges over");
                 } catch (InterruptedException e) {
                     logger.warn(Thread.currentThread().getName() + " was interrupted unexpectedly, which may cause unpredictable exception!");
                 } catch (ExecutionException e) {

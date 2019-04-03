@@ -66,7 +66,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
             group = Constants.PATH_SEPARATOR + group;
         }
         this.root = group;
-        zkClient = zookeeperTransporter.connect(url);
+        zkClient = zookeeperTransporter.connect(url); // new ZkclientZookeeperClient(url);
         zkClient.addStateListener(new StateListener() {
             public void stateChanged(int state) {
                 if (state == RECONNECTED) {
@@ -106,7 +106,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
     }
 
     protected void doRegister(URL url) {
-        try {
+        try { //hhh/cn.injava.dubboss.api.DemoService/consumers/consumer%3A%2F%2F192.168.168.1%2Fcn.injava.dubboss.api.DemoService%3Fapplication%3Ddubbo-server%26category%3Dconsumers%26check%3Dfalse%26dubbo%3D2.0.0%26interface%3Dcn.injava.dubboss.api.DemoService%26methods%3DsayHello%2CsayBye%26pid%3D12228%26side%3Dconsumer%26timestamp%3D1553515734801
             zkClient.create(toUrlPath(url), url.getParameter(Constants.DYNAMIC_KEY, true));
         } catch (Throwable e) {
             throw new RpcException("Failed to register " + url + " to zookeeper " + getUrl() + ", cause: " + e.getMessage(), e);
@@ -158,7 +158,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
                 }
             } else {
                 List<URL> urls = new ArrayList<URL>();
-                for (String path : toCategoriesPath(url)) {
+                for (String path : toCategoriesPath(url)) { //  hhh/cn.injava.dubboss.api.DemoService/providers   /hhh/cn.injava.dubboss.api.DemoService/configurators   /hhh/cn.injava.dubboss.api.DemoService/routers
                     ConcurrentMap<NotifyListener, ChildListener> listeners = zkListeners.get(url);
                     if (listeners == null) {
                         zkListeners.putIfAbsent(url, new ConcurrentHashMap<NotifyListener, ChildListener>());

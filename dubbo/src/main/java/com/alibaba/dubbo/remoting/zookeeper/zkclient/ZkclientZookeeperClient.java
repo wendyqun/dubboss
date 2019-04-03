@@ -38,6 +38,7 @@ public class ZkclientZookeeperClient extends AbstractZookeeperClient<IZkChildLis
     public ZkclientZookeeperClient(URL url) {
         super(url);
         client = new ZkClientWrapper(url.getBackupAddress(), 30000);
+        logger.info("instace ZkClientWrapper over==========");
         client.addListener(new IZkStateListener() {
             public void handleStateChanged(KeeperState state) throws Exception {
                 ZkclientZookeeperClient.this.state = state;
@@ -52,6 +53,7 @@ public class ZkclientZookeeperClient extends AbstractZookeeperClient<IZkChildLis
                 stateChanged(StateListener.RECONNECTED);
             }
         });
+        logger.info("ZkClientWrapper add Listener over===========");
         client.start();
     }
 

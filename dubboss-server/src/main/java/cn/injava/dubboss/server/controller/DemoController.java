@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DemoController/* implements ApplicationContextAware*/{
     /*ApplicationContext context;*/
-    @Reference
+    @Reference(loadbalance = "roundrobin",sticky = true)
     public DemoService demoService;
 
     @ResponseBody

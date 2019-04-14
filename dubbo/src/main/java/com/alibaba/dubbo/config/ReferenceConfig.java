@@ -76,6 +76,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
     // client type
     private String client;
     // url for peer-to-peer invocation
+    // 配置中心的地址，或者是直连服务提供者的地址
     private String url;
     // method configs
     private List<MethodConfig> methods;
@@ -358,7 +359,9 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
             if (logger.isInfoEnabled()) {
                 logger.info("Using injvm service " + interfaceClass.getName());
             }
-        } else {
+        }
+        else {
+            // 若 @Reference注解配置了url属性
             if (url != null && url.length() > 0) { // user specified URL, could be peer-to-peer address, or register center's address.
                 String[] us = Constants.SEMICOLON_SPLIT_PATTERN.split(url);
                 if (us != null && us.length > 0) {
@@ -374,7 +377,8 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
                         }
                     }
                 }
-            } else { // assemble URL from register center's configuration
+            } else {
+                // assemble URL from register center's configuration
                 //us[0]=registry://10.1.11.147:2888/com.alibaba.dubbo.registry.RegistryService?
                 // application=dubbo-server&dubbo=2.0.0&group=hhh&pid=9368&registry=zookeeper&timestamp=1552813208514
                 List<URL> us = loadRegistries(false);

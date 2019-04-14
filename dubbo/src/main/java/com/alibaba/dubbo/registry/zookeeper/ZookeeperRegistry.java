@@ -120,8 +120,8 @@ public class ZookeeperRegistry extends FailbackRegistry {
             throw new RpcException("Failed to unregister " + url + " to zookeeper " + getUrl() + ", cause: " + e.getMessage(), e);
         }
     }
-
-    protected void doSubscribe(final URL url, final NotifyListener listener) {
+    // 订阅 providers、configurators、routes节点 注册回调方法
+    protected void doSubscribe(final URL url, final NotifyListener notifyListener) {
         try {
             if (Constants.ANY_VALUE.equals(url.getServiceInterface())) {
                 String root = toRootPath();
@@ -130,21 +130,21 @@ public class ZookeeperRegistry extends FailbackRegistry {
                     zkListeners.putIfAbsent(url, new ConcurrentHashMap<NotifyListener, ChildListener>());
                     listeners = zkListeners.get(url);
                 }
-                ChildListener zkListener = listeners.get(listener);
+                ChildListener zkListener = listeners.get(notifyListener);
                 if (zkListener == null) {
-                    listeners.putIfAbsent(listener, new ChildListener() {
+                    listeners.putIfAbsent(notifyListener, new ChildListener() {
                         public void childChanged(String parentPath, List<String> currentChilds) {
                             for (String child : currentChilds) {
                                 child = URL.decode(child);
                                 if (!anyServices.contains(child)) {
                                     anyServices.add(child);
                                     subscribe(url.setPath(child).addParameters(Constants.INTERFACE_KEY, child,
-                                            Constants.CHECK_KEY, String.valueOf(false)), listener);
+                                            Constants.CHECK_KEY, String.valueOf(false)), notifyListener);
                                 }
                             }
                         }
                     });
-                    zkListener = listeners.get(listener);
+                    zkListener = listeners.get(notifyListener);
                 }
                 zkClient.create(root, false);
                 List<String> services = zkClient.addChildListener(root, zkListener);
@@ -153,33 +153,41 @@ public class ZookeeperRegistry extends FailbackRegistry {
                         service = URL.decode(service);
                         anyServices.add(service);
                         subscribe(url.setPath(service).addParameters(Constants.INTERFACE_KEY, service,
-                                Constants.CHECK_KEY, String.valueOf(false)), listener);
+                                Constants.CHECK_KEY, String.valueOf(false)), notifyListener);
                     }
                 }
             } else {
                 List<URL> urls = new ArrayList<URL>();
-                for (String path : toCategoriesPath(url)) { //  hhh/cn.injava.dubboss.api.DemoService/providers   /hhh/cn.injava.dubboss.api.DemoService/configurators   /hhh/cn.injava.dubboss.api.DemoService/routers
-                    ConcurrentMap<NotifyListener, ChildListener> listeners = zkListeners.get(url);
-                    if (listeners == null) {
+                //  /hhh/cn.injava.dubboss.api.DemoService/providers
+                //  /hhh/cn.injava.dubboss.api.DemoService/configurators
+                //  /hhh/cn.injava.dubboss.api.DemoService/routers
+                for (String path : toCategoriesPath(url)) {
+                    ConcurrentMap<NotifyListener, ChildListener> listenerMap = zkListeners.get(url);
+                    if (listenerMap == null) {
                         zkListeners.putIfAbsent(url, new ConcurrentHashMap<NotifyListener, ChildListener>());
-                        listeners = zkListeners.get(url);
+                        listenerMap = zkListeners.get(url);
                     }
-                    ChildListener zkListener = listeners.get(listener);
+                    ChildListener zkListener = listenerMap.get(notifyListener);
                     if (zkListener == null) {
-                        listeners.putIfAbsent(listener, new ChildListener() {
+                        listenerMap.putIfAbsent(notifyListener, new ChildListener() {
                             public void childChanged(String parentPath, List<String> currentChilds) {
-                                ZookeeperRegistry.this.notify(url, listener, toUrlsWithEmpty(url, parentPath, currentChilds));
+                                ZookeeperRegistry.this.notify(url, notifyListener, toUrlsWithEmpty(url, parentPath, currentChilds));
                             }
                         });
-                        zkListener = listeners.get(listener);
+                        zkListener = listenerMap.get(notifyListener);
                     }
                     zkClient.create(path, false);
                     List<String> children = zkClient.addChildListener(path, zkListener);
+                    // path 下有子节点则添加到urls里
                     if (children != null) {
+                        // 添加带有Empty协议的url（children 为空时会生成Empty协议的url）
                         urls.addAll(toUrlsWithEmpty(url, path, children));
                     }
                 }
-                notify(url, listener, urls);
+                // route 目录下的url举例：
+                // route://0.0.0.0/cn.injava.dubboss.api.DemoService?category=routers&dynamic=false
+                // &enabled=false&force=false&name=liguanqun&priority=0&router=condition&rule=+=>+provider.port+!=+20880&runtime=false
+                notify(url, notifyListener, urls);
             }
         } catch (Throwable e) {
             throw new RpcException("Failed to subscribe " + url + " to zookeeper " + getUrl() + ", cause: " + e.getMessage(), e);

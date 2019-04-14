@@ -321,7 +321,12 @@ public class DubboProtocol extends AbstractProtocol {
     }
 
     public <T> Invoker<T> refer(Class<T> serviceType, URL url) throws RpcException {
-        optimizeSerialization(url);//url =dubbo://10.1.128.181:20880/cn.injava.dubboss.api.DemoService?accepts=1000&anyhost=true&application=dubbo-server&check=false&dispatcher=message&dubbo=2.0.0&generic=false&interface=cn.injava.dubboss.api.DemoService&methods=sayHello,sayBye&pid=9012&register.ip=192.168.10.101&remote.timestamp=1552813101902&side=consumer&timestamp=1552813291423
+        // url =dubbo://10.1.128.181:20880/cn.injava.dubboss.api.DemoService?accepts=1000
+        // &anyhost=true&application=dubbo-server&check=false&dispatcher=message&dubbo=2.0.0
+        // &generic=false&interface=cn.injava.dubboss.api.DemoService
+        // &methods=sayHello,sayBye&pid=9012&register.ip=192.168.10.101
+        // &remote.timestamp=1552813101902&side=consumer&timestamp=1552813291423
+        optimizeSerialization(url);
         // create rpc invoker.
         DubboInvoker<T> invoker = new DubboInvoker<T>(serviceType, url, getClients(url), invokers);
         invokers.add(invoker);

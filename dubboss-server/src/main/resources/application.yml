@@ -6,10 +6,9 @@ spring:
             name: dubbo-server
         registry:
             address: zookeeper://10.1.11.147:2888
-            group: hhh
         consumer:
            # check: false
-            timeout: 1200000
+            timeout: 12000
             retries: 0
         # 很关键，否则controller中的service注入为null
         scan: cn.injava.dubboss.server.controller

@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * RegistryProtocol
+ * RegistryProtocol (API/SPI, Singleton, ThreadSafe)
  *
  */
 public class RegistryProtocol implements Protocol {
@@ -298,8 +298,8 @@ public class RegistryProtocol implements Protocol {
                     || "*".equals(group)) {
                 return doRefer(getMergeableCluster(), registry, type, url);
             }
-        }
-        return doRefer(cluster, registry, type, url);
+        }// cluster$Adaptive
+        return doRefer(cluster, registry, type, url); //
     }
 
     private Cluster getMergeableCluster() {

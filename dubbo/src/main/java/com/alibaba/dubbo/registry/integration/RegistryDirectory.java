@@ -156,6 +156,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
 
     public void subscribe(URL url) {
         setConsumerUrl(url);
+        // 默认FailbackRegistry.subscribe()
         registry.subscribe(url, this);
     }
 
@@ -388,7 +389,10 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
                     logger.error("Failed to refer invoker for interface:" + serviceType + ",url:(" + url + ")" + t.getMessage(), t);
                 }
                 if (invoker != null) { // Put new invoker in cache
-                    newUrlInvokerMap.put(key, invoker);// key=dubbo://10.1.128.181:20880/cn.injava.dubboss.api.DemoService?accepts=1000&anyhost=true&application=dubbo-server&check=false&dispatcher=message&dubbo=2.0.0&generic=false&interface=cn.injava.dubboss.api.DemoService&methods=sayHello,sayBye&pid=9012&register.ip=192.168.10.101&remote.timestamp=1552813101902&side=consumer&timestamp=1552813291423
+                    // key=dubbo://10.1.128.181:20880/cn.injava.dubboss.api.DemoService?accepts=1000&anyhost=true&application=dubbo-server&check=false&dispatcher=message&dubbo=2.0.0
+                    // &generic=false&interface=cn.injava.dubboss.api.DemoService&methods=sayHello,sayBye
+                    // &pid=9012&register.ip=192.168.10.101&remote.timestamp=1552813101902&side=consumer&timestamp=1552813291423
+                    newUrlInvokerMap.put(key, invoker);
                 }
             } else {
                 newUrlInvokerMap.put(key, invoker);

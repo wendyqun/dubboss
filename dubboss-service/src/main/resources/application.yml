@@ -6,7 +6,6 @@ spring:
             name: dubbo-service
         registry:
             address: zookeeper://10.1.11.147:2888
-            group : hhh
         scan: cn.injava.dubboss.service
         protocol:
              name: dubbo

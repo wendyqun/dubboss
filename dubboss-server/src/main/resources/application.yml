@@ -8,7 +8,7 @@ spring:
             address: zookeeper://10.1.11.147:2888
         consumer:
            # check: false
-            timeout: 12000
+           # timeout: 20000
             retries: 0
         # 很关键，否则controller中的service注入为null
         scan: cn.injava.dubboss.server.controller
@@ -18,3 +18,11 @@ spring:
              threads: 500
              accepts: 2000
              dispatcher: message
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    shutdown:
+      enabled: "true"

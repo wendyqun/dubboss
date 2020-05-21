@@ -1,6 +1,7 @@
 package cn.injava.dubboss.server.controller;
 
 import cn.injava.dubboss.api.DemoService;
+import cn.injava.dubboss.api.StubTestService;
 import com.alibaba.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by apple on 16/2/18.
  */
 @RestController
-public class DemoController/* implements ApplicationContextAware*/{
+public class DemoController{
     /*ApplicationContext context;*/
-    @Reference(loadbalance = "roundrobin",sticky = true)
+    @Reference(loadbalance = "roundrobin",sticky = true,connections = 2)
     public DemoService demoService;
+    @Reference(connections = 2)
+    public StubTestService  stubTestService;
 
     @ResponseBody
     @RequestMapping("/hello/{value}")
@@ -25,8 +28,10 @@ public class DemoController/* implements ApplicationContextAware*/{
         return demoService.sayHello(value);
     }
 
-    /*@Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.context=applicationContext;
-    }*/
+    @ResponseBody
+    @RequestMapping("/hello2/{value}")
+    public String hello2(@PathVariable String value){
+        //return (((DemoService)context.getBean("demoService")).sayHello(value));
+        return stubTestService.sayHello(value);
+    }
 }

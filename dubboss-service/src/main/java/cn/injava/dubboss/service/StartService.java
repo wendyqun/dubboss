@@ -1,5 +1,6 @@
 package cn.injava.dubboss.service;
 
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Bean;
  * Created by apple on 16/2/18.
  */
 @SpringBootApplication
+@EnableDubbo
 public class StartService {
     public static void main(String[] args){
         SpringApplication application=new SpringApplication(StartService.class);

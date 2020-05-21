@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://code.alibabatech.com/schema/dubbo
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 提供方应用信息，用于计算依赖关系（一个名字而已没那么重要） -->
+    <!--<dubbo:application name="consume" />-->
+
+    <!-- 注册中心暴露服务地址 -->
+    <!--<dubbo:registry protocol="zookeeper" address="192.168.3.138:2181" check="false"/>-->
+
+    <!--<dubbo:annotation package="com.dubbo" />-->
+
+    <dubbo:reference id="demoService"
+                     interface="cn.injava.dubboss.api.DemoService"
+                     group="dubbo" timeout="20000">
+    </dubbo:reference>
+
+</beans>

@@ -171,6 +171,10 @@ public class RegistryProtocol implements Protocol {
 
     @SuppressWarnings("unchecked")
     private <T> ExporterChangeableWrapper<T> doLocalExport(final Invoker<T> originInvoker) {
+        //dubbo://10.1.128.181:20880/cn.injava.dubboss.api.DemoService?
+        // accepts=1000&anyhost=true&application=dubbo-service&bind.ip=10.1.128.181&bind.port=20880
+        // &dispatcher=message&dubbo=2.0.0&generic=false&interface=cn.injava.dubboss.api.DemoService
+        // &methods=sayHello,sayBye&pid=9308&side=provider&threadpool=cached&threads=500&timestamp=1555725547752
         String key = getCacheKey(originInvoker);
         ExporterChangeableWrapper<T> exporter = (ExporterChangeableWrapper<T>) bounds.get(key);
         if (exporter == null) {

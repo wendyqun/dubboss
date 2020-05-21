@@ -9,14 +9,21 @@ import com.alibaba.dubbo.rpc.RpcContext;
  *
  * Created by apple on 16/2/18.
  */
-@Service
+@Service(timeout = 13000,cluster = "failfast")
 public class DemoServiceImpl implements DemoService {
 
     private String sex;
     private String age;
     @Override
     public String sayHello(String name) {
-        return System.currentTimeMillis() + ", response form provider: " + RpcContext.getContext().getLocalAddress();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        String res=System.currentTimeMillis() + ", response form provider: " + RpcContext.getContext().getLocalAddress();
+        System.out.println(res);
+        return res;
     }
 
     @Override
